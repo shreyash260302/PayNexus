@@ -32,11 +32,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: order.savedOrder.amount,
+        amount: order.data.savedOrder.amount,
         currency: "INR",
         name: "Home Service",
         description: "Payment for your order",
-        order_id: order.savedOrder.razorpayOrderId,
+        order_id: order.data.savedOrder.razorpayOrderId,
         handler: async function (response: any) {
           console.log("Payment Successful:", response);
 
