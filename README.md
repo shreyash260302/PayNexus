@@ -77,8 +77,8 @@ Your backend will run at [http://localhost:4000](http://localhost:4000).
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `POST` | `/api/order/create` | Create a Razorpay order |
-| `POST` | `/api/order/verify` | Verify Razorpay payment |
+| `POST` | `/order/create` | Create a Razorpay order |
+| `POST` | `/order/verify` | Verify Razorpay payment |
 
 ---
 
