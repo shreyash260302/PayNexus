@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createOrder,verifyPayment } from "@/services/orderService";
+import { createOrder, verifyPayment } from "@/services/orderService";
 
 interface PaymentButtonProps {
   amount: number;
@@ -12,9 +12,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
   useEffect(() => {
-    if (window && (window as any).Razorpay) {
-      setRazorpayLoaded(true);
-    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => setRazorpayLoaded(true); // Set state when script is loaded
+    document.body.appendChild(script);
   }, []);
 
   const handlePayment = async () => {
@@ -23,10 +25,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
       return;
     }
     setLoading(true);
-    // debugger
+
     try {
       const order = await createOrder(amount);
       console.log("Order created:", order);
+
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: order.savedOrder.amount,
@@ -43,7 +46,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
               paymentId: response.razorpay_payment_id,
               signature: response.razorpay_signature,
             });
-      
+
             if (verificationResponse.success) {
               console.log("✅ Payment Verified:", verificationResponse);
               window.location.href = "/success";
@@ -55,10 +58,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
             console.error("❌ Error Verifying Payment:", error);
             window.location.href = "/failure";
           }
-        //window.location.href = `/success?payment_id=${response.razorpay_payment_id}`;
         },
 
-        
         prefill: {
           name: "John Doe",
           email: "johndoe@example.com",
