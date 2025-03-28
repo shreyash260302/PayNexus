@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createOrder, verifyPayment } from "@/services/orderService";
+import { useRouter } from "next/navigation";
 
 interface PaymentButtonProps {
   amount: number;
@@ -11,6 +12,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
   const [loading, setLoading] = useState(false);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
+  const router = useRouter();
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -49,14 +51,14 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
 
             if (verificationResponse.success) {
               console.log("✅ Payment Verified:", verificationResponse);
-              window.location.href = "/success";
+              router.push("/success");
             } else {
               console.log("❌ Payment Verification Failed:", verificationResponse);
-              window.location.href = "/failure";
+              router.push("/failure");
             }
           } catch (error) {
             console.error("❌ Error Verifying Payment:", error);
-            window.location.href = "/failure";
+            router.push("/failure");
           }
         },
 
@@ -80,7 +82,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ amount }) => {
   return (
     <button
       onClick={handlePayment}
-      className="bg-blue-500 text-white px-6 py-3 rounded-md"
+      className="block w-full bg-blue-950 text-white text-center py-4 rounded-xl font-medium"
       disabled={loading}
     >
       {loading ? "Processing..." : "Pay Now"}

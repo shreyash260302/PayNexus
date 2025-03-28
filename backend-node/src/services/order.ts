@@ -32,7 +32,7 @@ export const verifyPaymentService = async (orderId: string, paymentId: string, s
     throw new Error("RAZORPAY_KEY_SECRET is not defined in .env");
   }
 
-  console.log("🔹 Received Data:", { orderId, paymentId, signature });
+  // console.log("🔹 Received Data:", { orderId, paymentId, signature });
 
   const expectedSignature = crypto
     .createHmac("sha256", secret)
